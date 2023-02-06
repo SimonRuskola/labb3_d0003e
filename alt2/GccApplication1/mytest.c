@@ -159,7 +159,7 @@ bool Cycle(void){
 
 
 
-void blink(void){
+void blink(int n){
 	while(true){
 		while (Cycle())
 		{LCDDR3 = !LCDDR3;}	
@@ -201,6 +201,6 @@ int main() {
 
 	spawn(button,4);
     spawn(computePrimes,0);
-	blink();
+	blink(1);
 	
 }

@@ -92,18 +92,17 @@ static void enqueue(thread p, thread *queue) {
 */
 
 
+
 static void enqueue(thread p, thread *queue) {
-    p->next = NULL;
     if (*queue == NULL) {
         *queue = p;
     } else {
-        thread q = *queue;
-        while (q->next)
-            q = q->next;
-        q->next = p;
+        p->next = *queue;
+        *queue = p;
         
     }
 }
+
 
 
 static thread dequeue(thread *queue) {

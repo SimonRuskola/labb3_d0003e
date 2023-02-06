@@ -28,9 +28,20 @@
 #define NineValue   0x0b51 //0001010110110000 0x0 0xb 0x5 0x1 = 0x0b51 
 //#define ValueArray (int[]){ZeroValue,OneValue,TwoValue,ThreeValue,FourValue,FiveValue,SixValue,SevenValue,EightValue,NineValue,BlankValue}	
 int ValueArray[] = {ZeroValue,OneValue,TwoValue,ThreeValue,FourValue,FiveValue,SixValue,SevenValue,EightValue,NineValue,BlankValue};
-int pp;
 
 mutex m = MUTEX_INIT;
+
+extern int blinkCounter;
+
+
+#define cycleValue 15625
+int lastTime;
+volatile int deltaTime;
+
+int curButtonVal;
+int lastButtonVal = 1;
+
+int loopCounter = 25000;
 
 void LCD_Init(void) {
 	CLKPR = (1 << CLKPCE); 
@@ -46,6 +57,16 @@ void LCD_Init(void) {
     LCDCCR = (1<<LCDCC3) | (1<<LCDCC2) | (1<<LCDCC1)| (1<<LCDCC0);
     // Enable LCD, low power waveform, no frame interrupt, no blanking 
     LCDCRA = (1<<LCDEN) | (1<<LCDAB) |  (0<<LCDBL);
+}
+
+void blinkInit(void){
+	//8 MHz system clock with a prescaling factor of 256
+	TCCR1B = (1<<CS12); 
+	CLKPR  = CLKPR  | (1 << CLKPS0);
+}
+
+void buttonInit(void){
+	PORTB = PORTB | (1 << 7);
 }
 
 void writeChar(char ch, int pos) {
@@ -113,17 +134,16 @@ bool is_prime(long i) {
 
 
 void printAt(long num, int pos) {
-    pp = pos;
+    int pp = pos;
     writeChar( (num % 100) / 10 + '0', pp);
 	for(volatile int i=0; i<1000; i++){
 		
 	}
-	
     pp++;
     writeChar( num % 10 + '0', pp);
 }
 
-void computePrimes(int pos) {
+void computePrimes_1(int pos) {
     long n;
 
     for(n = 1; ; n++) {
@@ -137,8 +157,58 @@ void computePrimes(int pos) {
 }
 
 
+
+bool Cycle(void){
+	if(blinkCounter>=10){
+		blinkCounter = 0;
+		return true;
+	}
+	return false;
+}
+
+
+
+void blink_1(void){
+	while(true){
+		while (Cycle())
+		{LCDDR3 = !LCDDR3;}	
+	}
+	
+	
+}
+
+bool pressed(void){
+	curButtonVal = (PINB>>7);
+	if(lastButtonVal != curButtonVal){
+		lastButtonVal = curButtonVal;
+		return true;
+	}
+
+	return false;
+
+	
+}
+
+void button_1(int pos){
+	
+	int n = 1;
+	while (true)
+	{
+		if(pressed()){
+			n++;
+			printAt(n/2,pos);
+		}
+	}
+	
+
+}
+
+
 int main() {
     LCD_Init();
-    spawn(computePrimes, 0);
-    computePrimes(3);
+	blinkInit();
+	spawn(button_1,4);
+    spawn(computePrimes_1,0);
+	blink_1();
+	
 }

@@ -55,11 +55,10 @@ static void initialize(void) {
     
     TIMSK1 |=  (1 << OCIE1A); //enabe interupts for timer
 
-
     OCR1A = 391; // (8000000 / (1024) * 50 *10^(-3)  
 
     TCNT1 = 0; // set timer to 0
-
+    
 
     initialized = 1;
 }
@@ -71,10 +70,27 @@ ISR(PCINT1_vect) {
     
 }
 
+
 ISR(TIMER1_COMPA_vect){
     blinkCounter++;
     yield();
 }
+
+/*
+static void enqueue(thread p, thread *queue) {
+    p->next = NULL;
+    if (*queue == NULL) {
+        *queue = p;
+    } else {
+        thread q = *queue;
+        while (q->next)
+            q = q->next;
+        q->next = p;
+        
+    }
+}
+*/
+
 
 static void enqueue(thread p, thread *queue) {
     p->next = NULL;
@@ -85,8 +101,10 @@ static void enqueue(thread p, thread *queue) {
         while (q->next)
             q = q->next;
         q->next = p;
+        
     }
 }
+
 
 static thread dequeue(thread *queue) {
     thread p = *queue;

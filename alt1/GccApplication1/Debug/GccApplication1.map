@@ -21,8 +21,6 @@ Common symbol       size              file
 initp               0x6d              tinythreads.o
 curButtonVal        0x2               mytest.o
 threads             0x1b4             tinythreads.o
-lastTime            0x2               mytest.o
-deltaTime           0x2               mytest.o
 
 Discarded input sections
 
@@ -33,8 +31,6 @@ Discarded input sections
  .bss           0x00000000        0x0 mytest.o
  .text.buttonInit
                 0x00000000        0x4 mytest.o
- .data.loopCounter
-                0x00000000        0x2 mytest.o
  .bss.m         0x00000000        0x4 mytest.o
  .text          0x00000000        0x0 tinythreads.o
  .data          0x00000000        0x0 tinythreads.o
@@ -447,7 +443,7 @@ END GROUP
                 0x0080011c                _edata = .
                 0x0080011c                PROVIDE (__data_end, .)
 
-.bss            0x0080011c      0x22d
+.bss            0x0080011c      0x229
                 0x0080011c                PROVIDE (__bss_start, .)
  *(.bss)
  *(.bss*)
@@ -460,22 +456,20 @@ END GROUP
  .bss.readyQ    0x00800120        0x2 tinythreads.o
                 0x00800120                readyQ
  *(COMMON)
- COMMON         0x00800122        0x6 mytest.o
+ COMMON         0x00800122        0x2 mytest.o
                 0x00800122                curButtonVal
-                0x00800124                lastTime
-                0x00800126                deltaTime
- COMMON         0x00800128      0x221 tinythreads.o
-                0x00800128                initp
-                0x00800195                threads
-                0x00800349                PROVIDE (__bss_end, .)
+ COMMON         0x00800124      0x221 tinythreads.o
+                0x00800124                initp
+                0x00800191                threads
+                0x00800345                PROVIDE (__bss_end, .)
                 0x00000a76                __data_load_start = LOADADDR (.data)
                 0x00000a92                __data_load_end = (__data_load_start + SIZEOF (.data))
 
-.noinit         0x00800349        0x0
+.noinit         0x00800345        0x0
                 [!provide]                PROVIDE (__noinit_start, .)
  *(.noinit*)
                 [!provide]                PROVIDE (__noinit_end, .)
-                0x00800349                _end = .
+                0x00800345                _end = .
                 [!provide]                PROVIDE (__heap_start, .)
 
 .eeprom         0x00810000        0x0
@@ -551,11 +545,11 @@ END GROUP
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000     0x1231
+.debug_info     0x00000000     0x11fb
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000      0x7b6 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.7.374/gcc/dev/atmega169p/avr5/crtatmega169p.o
- .debug_info    0x000007b6      0x481 mytest.o
- .debug_info    0x00000c37      0x5fa tinythreads.o
+ .debug_info    0x000007b6      0x44b mytest.o
+ .debug_info    0x00000c01      0x5fa tinythreads.o
 
 .debug_abbrev   0x00000000      0xb5d
  *(.debug_abbrev)
@@ -563,24 +557,24 @@ END GROUP
  .debug_abbrev  0x0000074b      0x1e6 mytest.o
  .debug_abbrev  0x00000931      0x22c tinythreads.o
 
-.debug_line     0x00000000      0x7a8
+.debug_line     0x00000000      0x7a7
  *(.debug_line .debug_line.* .debug_line_end)
  .debug_line    0x00000000      0x122 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.7.374/gcc/dev/atmega169p/avr5/crtatmega169p.o
- .debug_line    0x00000122      0x386 mytest.o
- .debug_line    0x000004a8      0x300 tinythreads.o
+ .debug_line    0x00000122      0x385 mytest.o
+ .debug_line    0x000004a7      0x300 tinythreads.o
 
 .debug_frame    0x00000000      0x284
  *(.debug_frame)
  .debug_frame   0x00000000      0x134 mytest.o
  .debug_frame   0x00000134      0x150 tinythreads.o
 
-.debug_str      0x00000000      0x5be
+.debug_str      0x00000000      0x5a4
  *(.debug_str)
  .debug_str     0x00000000      0x2b3 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.7.374/gcc/dev/atmega169p/avr5/crtatmega169p.o
- .debug_str     0x000002b3      0x240 mytest.o
-                                0x279 (size before relaxing)
- .debug_str     0x000004f3       0xcb tinythreads.o
-                                0x291 (size before relaxing)
+ .debug_str     0x000002b3      0x226 mytest.o
+                                0x25f (size before relaxing)
+ .debug_str     0x000004d9       0xcb tinythreads.o
+                                0x296 (size before relaxing)
 
 .debug_loc      0x00000000      0x86a
  *(.debug_loc)

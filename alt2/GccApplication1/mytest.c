@@ -33,15 +33,9 @@ mutex m = MUTEX_INIT;
 
 extern int blinkCounter;
 
-
-#define cycleValue 15625
-int lastTime;
-volatile int deltaTime;
-
 int curButtonVal;
 int lastButtonVal = 1;
 
-int loopCounter = 25000;
 
 void LCD_Init(void) {
 	CLKPR = (1 << CLKPCE); 
@@ -143,15 +137,12 @@ void printAt(long num, int pos) {
     writeChar( num % 10 + '0', pp);
 }
 
-void computePrimes_1(int pos) {
+void computePrimes(int pos) {
     long n;
 
     for(n = 1; ; n++) {
         if (is_prime(n)) {
-			//lock(&m);
             printAt(n, pos);
-			//unlock(&m);
-            //yield();	
         }
     }
 }
@@ -168,7 +159,7 @@ bool Cycle(void){
 
 
 
-void blink_1(void){
+void blink(void){
 	while(true){
 		while (Cycle())
 		{LCDDR3 = !LCDDR3;}	
@@ -189,7 +180,7 @@ bool pressed(void){
 	
 }
 
-void button_1(int pos){
+void button(int pos){
 	
 	int n = 1;
 	while (true)
@@ -207,8 +198,9 @@ void button_1(int pos){
 int main() {
     LCD_Init();
 	blinkInit();
-	spawn(button_1,4);
-    spawn(computePrimes_1,0);
-	blink_1();
+
+	spawn(button,4);
+    spawn(computePrimes,0);
+	blink();
 	
 }

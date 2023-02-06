@@ -7,7 +7,7 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, ALLOC, LOAD, DATA
   1 .text         00000a76  00000000  00000000  00000094  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .bss          0000022d  0080011c  0080011c  00000b26  2**0
+  2 .bss          00000229  0080011c  0080011c  00000b26  2**0
                   ALLOC
   3 .comment      00000030  00000000  00000000  00000b26  2**0
                   CONTENTS, READONLY
@@ -15,19 +15,19 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
   5 .debug_aranges 000000d0  00000000  00000000  00000b98  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   00001231  00000000  00000000  00000c68  2**0
+  6 .debug_info   000011fb  00000000  00000000  00000c68  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 00000b5d  00000000  00000000  00001e99  2**0
+  7 .debug_abbrev 00000b5d  00000000  00000000  00001e63  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   000007a8  00000000  00000000  000029f6  2**0
+  8 .debug_line   000007a7  00000000  00000000  000029c0  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  00000284  00000000  00000000  000031a0  2**2
+  9 .debug_frame  00000284  00000000  00000000  00003168  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    000005be  00000000  00000000  00003424  2**0
+ 10 .debug_str    0000059e  00000000  00000000  000033ec  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    0000086a  00000000  00000000  000039e2  2**0
+ 11 .debug_loc    0000086a  00000000  00000000  0000398a  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 000000d0  00000000  00000000  0000424c  2**0
+ 12 .debug_ranges 000000d0  00000000  00000000  000041f4  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -88,7 +88,7 @@ Disassembly of section .text:
   86:	1d 92       	st	X+, r1
 
 00000088 <.do_clear_bss_start>:
-  88:	a9 34       	cpi	r26, 0x49	; 73
+  88:	a5 34       	cpi	r26, 0x45	; 69
   8a:	b2 07       	cpc	r27, r18
   8c:	e1 f7       	brne	.-8      	; 0x86 <.do_clear_bss_loop>
   8e:	0e 94 59 03 	call	0x6b2	; 0x6b2 <main>
@@ -889,9 +889,9 @@ void printAt(long num, int pos) {
  5ec:	cf 90       	pop	r12
  5ee:	08 95       	ret
 
-000005f0 <computePrimes_1>:
+000005f0 <computePrimes>:
 
-void computePrimes_1(int pos) {
+void computePrimes(int pos) {
  5f0:	ec 01       	movw	r28, r24
     long n;
 
@@ -905,8 +905,7 @@ void computePrimes_1(int pos) {
  5fc:	b6 01       	movw	r22, r12
  5fe:	0e 94 5e 02 	call	0x4bc	; 0x4bc <is_prime>
  602:	88 23       	and	r24, r24
- 604:	29 f0       	breq	.+10     	; 0x610 <computePrimes_1+0x20>
-			//lock(&m);
+ 604:	29 f0       	breq	.+10     	; 0x610 <computePrimes+0x20>
             printAt(n, pos);
  606:	ae 01       	movw	r20, r28
  608:	c7 01       	movw	r24, r14
@@ -914,7 +913,7 @@ void computePrimes_1(int pos) {
  60c:	0e 94 ae 02 	call	0x55c	; 0x55c <printAt>
 }
 
-void computePrimes_1(int pos) {
+void computePrimes(int pos) {
     long n;
 
     for(n = 1; ; n++) {
@@ -923,13 +922,11 @@ void computePrimes_1(int pos) {
  614:	d8 0a       	sbc	r13, r24
  616:	e8 0a       	sbc	r14, r24
  618:	f8 0a       	sbc	r15, r24
-			//lock(&m);
+        if (is_prime(n)) {
             printAt(n, pos);
-			//unlock(&m);
-            //yield();	
         }
     }
- 61a:	ef cf       	rjmp	.-34     	; 0x5fa <computePrimes_1+0xa>
+ 61a:	ef cf       	rjmp	.-34     	; 0x5fa <computePrimes+0xa>
 
 0000061c <Cycle>:
 }
@@ -954,10 +951,10 @@ bool Cycle(void){
 }
  636:	08 95       	ret
 
-00000638 <blink_1>:
+00000638 <blink>:
 
 
-void blink_1(void){
+void blink(void){
 	while(true){
 		while (Cycle())
 		{LCDDR3 = !LCDDR3;}	
@@ -968,10 +965,10 @@ void blink_1(void){
 
 
 
-void blink_1(void){
+void blink(void){
 	while(true){
 		while (Cycle())
- 640:	05 c0       	rjmp	.+10     	; 0x64c <blink_1+0x14>
+ 640:	05 c0       	rjmp	.+10     	; 0x64c <blink+0x14>
 		{LCDDR3 = !LCDDR3;}	
  642:	98 81       	ld	r25, Y
  644:	81 2f       	mov	r24, r17
@@ -981,13 +978,13 @@ void blink_1(void){
 
 
 
-void blink_1(void){
+void blink(void){
 	while(true){
 		while (Cycle())
  64c:	0e 94 0e 03 	call	0x61c	; 0x61c <Cycle>
  650:	81 11       	cpse	r24, r1
- 652:	f7 cf       	rjmp	.-18     	; 0x642 <blink_1+0xa>
- 654:	fb cf       	rjmp	.-10     	; 0x64c <blink_1+0x14>
+ 652:	f7 cf       	rjmp	.-18     	; 0x642 <blink+0xa>
+ 654:	fb cf       	rjmp	.-10     	; 0x64c <blink+0x14>
 
 00000656 <pressed>:
 	
@@ -1024,9 +1021,9 @@ bool pressed(void){
 }
  684:	08 95       	ret
 
-00000686 <button_1>:
+00000686 <button>:
 
-void button_1(int pos){
+void button(int pos){
  686:	8c 01       	movw	r16, r24
 	
 	int n = 1;
@@ -1037,12 +1034,12 @@ void button_1(int pos){
 		if(pressed()){
  68c:	0e 94 2b 03 	call	0x656	; 0x656 <pressed>
  690:	88 23       	and	r24, r24
- 692:	e1 f3       	breq	.-8      	; 0x68c <button_1+0x6>
+ 692:	e1 f3       	breq	.-8      	; 0x68c <button+0x6>
 			n++;
  694:	21 96       	adiw	r28, 0x01	; 1
 			printAt(n/2,pos);
  696:	be 01       	movw	r22, r28
- 698:	12 f4       	brpl	.+4      	; 0x69e <button_1+0x18>
+ 698:	12 f4       	brpl	.+4      	; 0x69e <button+0x18>
  69a:	6f 5f       	subi	r22, 0xFF	; 255
  69c:	7f 4f       	sbci	r23, 0xFF	; 255
  69e:	75 95       	asr	r23
@@ -1053,7 +1050,7 @@ void button_1(int pos){
  6a8:	99 0b       	sbc	r25, r25
  6aa:	a8 01       	movw	r20, r16
  6ac:	0e 94 ae 02 	call	0x55c	; 0x55c <printAt>
- 6b0:	ed cf       	rjmp	.-38     	; 0x68c <button_1+0x6>
+ 6b0:	ed cf       	rjmp	.-38     	; 0x68c <button+0x6>
 
 000006b2 <main>:
 
@@ -1065,25 +1062,26 @@ int main() {
  6b2:	0e 94 4d 00 	call	0x9a	; 0x9a <LCD_Init>
 	blinkInit();
  6b6:	0e 94 5f 00 	call	0xbe	; 0xbe <blinkInit>
-	spawn(button_1,4);
+
+	spawn(button,4);
  6ba:	64 e0       	ldi	r22, 0x04	; 4
  6bc:	70 e0       	ldi	r23, 0x00	; 0
  6be:	83 e4       	ldi	r24, 0x43	; 67
  6c0:	93 e0       	ldi	r25, 0x03	; 3
  6c2:	0e 94 a2 03 	call	0x744	; 0x744 <spawn>
-    spawn(computePrimes_1,0);
+    spawn(computePrimes,0);
  6c6:	60 e0       	ldi	r22, 0x00	; 0
  6c8:	70 e0       	ldi	r23, 0x00	; 0
  6ca:	88 ef       	ldi	r24, 0xF8	; 248
  6cc:	92 e0       	ldi	r25, 0x02	; 2
  6ce:	0e 94 a2 03 	call	0x744	; 0x744 <spawn>
-	blink_1();
- 6d2:	0e 94 1c 03 	call	0x638	; 0x638 <blink_1>
+	blink();
+ 6d2:	0e 94 1c 03 	call	0x638	; 0x638 <blink>
 
 000006d6 <enqueue>:
-    blinkCounter++;
     yield();
 }
+
 
 static void enqueue(thread p, thread *queue) {
     p->next = NULL;
@@ -1188,21 +1186,21 @@ static void initialize(void) {
     int i;
     for (i=0; i<NTHREADS-1; i++)
         threads[i].next = &threads[i+1];
- 75e:	22 e0       	ldi	r18, 0x02	; 2
- 760:	32 e0       	ldi	r19, 0x02	; 2
- 762:	30 93 9a 01 	sts	0x019A, r19	; 0x80019a <threads+0x5>
- 766:	20 93 99 01 	sts	0x0199, r18	; 0x800199 <threads+0x4>
- 76a:	2f e6       	ldi	r18, 0x6F	; 111
+ 75e:	2e ef       	ldi	r18, 0xFE	; 254
+ 760:	31 e0       	ldi	r19, 0x01	; 1
+ 762:	30 93 96 01 	sts	0x0196, r19	; 0x800196 <threads+0x5>
+ 766:	20 93 95 01 	sts	0x0195, r18	; 0x800195 <threads+0x4>
+ 76a:	2b e6       	ldi	r18, 0x6B	; 107
  76c:	32 e0       	ldi	r19, 0x02	; 2
- 76e:	30 93 07 02 	sts	0x0207, r19	; 0x800207 <threads+0x72>
- 772:	20 93 06 02 	sts	0x0206, r18	; 0x800206 <threads+0x71>
- 776:	2c ed       	ldi	r18, 0xDC	; 220
+ 76e:	30 93 03 02 	sts	0x0203, r19	; 0x800203 <threads+0x72>
+ 772:	20 93 02 02 	sts	0x0202, r18	; 0x800202 <threads+0x71>
+ 776:	28 ed       	ldi	r18, 0xD8	; 216
  778:	32 e0       	ldi	r19, 0x02	; 2
- 77a:	30 93 74 02 	sts	0x0274, r19	; 0x800274 <threads+0xdf>
- 77e:	20 93 73 02 	sts	0x0273, r18	; 0x800273 <threads+0xde>
+ 77a:	30 93 70 02 	sts	0x0270, r19	; 0x800270 <threads+0xdf>
+ 77e:	20 93 6f 02 	sts	0x026F, r18	; 0x80026f <threads+0xde>
     threads[NTHREADS-1].next = NULL;
- 782:	10 92 e1 02 	sts	0x02E1, r1	; 0x8002e1 <threads+0x14c>
- 786:	10 92 e0 02 	sts	0x02E0, r1	; 0x8002e0 <threads+0x14b>
+ 782:	10 92 dd 02 	sts	0x02DD, r1	; 0x8002dd <threads+0x14c>
+ 786:	10 92 dc 02 	sts	0x02DC, r1	; 0x8002dc <threads+0x14b>
 
 
     // initialize button
@@ -1247,7 +1245,6 @@ static void initialize(void) {
  7b8:	22 60       	ori	r18, 0x02	; 2
  7ba:	20 83       	st	Z, r18
 
-
     OCR1A = 391; // (8000000 / (1024) * 50 *10^(-3)  
  7bc:	27 e8       	ldi	r18, 0x87	; 135
  7be:	31 e0       	ldi	r19, 0x01	; 1
@@ -1257,16 +1254,16 @@ static void initialize(void) {
     TCNT1 = 0; // set timer to 0
  7c8:	10 92 85 00 	sts	0x0085, r1	; 0x800085 <__TEXT_REGION_LENGTH__+0x7fc085>
  7cc:	10 92 84 00 	sts	0x0084, r1	; 0x800084 <__TEXT_REGION_LENGTH__+0x7fc084>
-
+    
 
     initialized = 1;
  7d0:	21 e0       	ldi	r18, 0x01	; 1
  7d2:	30 e0       	ldi	r19, 0x00	; 0
  7d4:	30 93 1f 01 	sts	0x011F, r19	; 0x80011f <initialized+0x1>
  7d8:	20 93 1e 01 	sts	0x011E, r18	; 0x80011e <initialized>
-        q->next = p;
-    }
+	*queue = p;
 }
+*/
 
 static thread dequeue(thread *queue) {
     thread p = *queue;
@@ -1327,9 +1324,9 @@ static thread dequeue(thread *queue) {
  838:	80 91 18 01 	lds	r24, 0x0118	; 0x800118 <current>
  83c:	90 91 19 01 	lds	r25, 0x0119	; 0x800119 <current+0x1>
  840:	0e 94 6b 03 	call	0x6d6	; 0x6d6 <enqueue>
-        q->next = p;
-    }
+	*queue = p;
 }
+*/
 
 static thread dequeue(thread *queue) {
     thread p = *queue;
@@ -1393,9 +1390,9 @@ void yield(void) {
  89a:	80 91 18 01 	lds	r24, 0x0118	; 0x800118 <current>
  89e:	90 91 19 01 	lds	r25, 0x0119	; 0x800119 <current+0x1>
  8a2:	0e 94 6b 03 	call	0x6d6	; 0x6d6 <enqueue>
-        q->next = p;
-    }
+	*queue = p;
 }
+*/
 
 static thread dequeue(thread *queue) {
     thread p = *queue;
@@ -1425,7 +1422,7 @@ void yield(void) {
  8c8:	ff cf       	rjmp	.-2      	; 0x8c8 <yield+0x34>
 
 000008ca <__vector_3>:
-
+    
 
     initialized = 1;
 }
@@ -1474,6 +1471,7 @@ ISR(PCINT1_vect) {
  912:	18 95       	reti
 
 00000914 <__vector_7>:
+
 
 ISR(TIMER1_COMPA_vect){
  914:	1f 92       	push	r1

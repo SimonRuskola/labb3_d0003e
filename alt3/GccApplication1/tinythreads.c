@@ -77,14 +77,18 @@ static void initialize(void) {
     initialized = 1;
 }
 
+void button(int);
+
 ISR(PCINT1_vect) { 
-	
-    
+	spawn(button,4);
 }
 
 
+void blink(int);
+
 ISR(TIMER1_COMPA_vect){
     blinkCounter++;
+	spawn(blink,1);
     
 }
 

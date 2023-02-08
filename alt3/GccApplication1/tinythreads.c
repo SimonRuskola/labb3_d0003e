@@ -78,14 +78,14 @@ static void initialize(void) {
 }
 
 ISR(PCINT1_vect) { 
-	unlock(getButtonMutex());
+	
     
 }
 
 
 ISR(TIMER1_COMPA_vect){
     blinkCounter++;
-    unlock(getBlinkMutex());
+    
 }
 
 

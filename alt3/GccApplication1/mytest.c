@@ -44,6 +44,7 @@ extern int blinkCounter;
 
 int curButtonVal;
 int lastButtonVal = 1;
+int buttoncounter = 1;
 
 
 void LCD_Init(void) {
@@ -178,16 +179,15 @@ bool Cycle(void){
 void blink(int n){
 	
 
-	while (true)
+	
+	while (Cycle())
 	{
-	    while (Cycle())
-	    {
-	    	
-	    	LCDDR3 = !LCDDR3;
-	    	
-	    }	
-		lock(&m_blink);
-	}
+		
+		LCDDR3 = !LCDDR3;
+		
+	}	
+	
+	
 	
 	
 	
@@ -208,19 +208,12 @@ bool pressed(void){
 }
 
 void button(int pos){
-	int n = 1;
+
 	
-	while (true)
-	{
-		lock(&m_button);
-	    if(pressed()){
-	    	n++;
-	    	printAt(n/2,pos);
-	    }
-	}
-	
-	
-	
+    if(pressed()){
+    	buttoncounter++;
+    	printAt(buttoncounter/2,pos);
+    }
 	
 
 }

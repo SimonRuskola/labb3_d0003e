@@ -30,6 +30,20 @@ thread current = &initp;
 int initialized = 0;
 int blinkCounter = 0;
 
+mutex m_primes  = {1,0};
+mutex m_button =  {1,0};
+mutex m_blink =  {1,0};
+
+
+mutex* getPrimesMutex(void){
+    return &m_primes;
+}
+mutex* getButtonMutex(void){
+    return &m_button;
+}
+mutex* getBlinkMutex(void){
+    return &m_blink;
+}
 
 static void initialize(void) {
     int i;
@@ -55,7 +69,7 @@ static void initialize(void) {
     
     TIMSK1 |=  (1 << OCIE1A); //enabe interupts for timer
 
-    OCR1A = 391; // (8000000 / (1024) * 50 *10^(-3)  
+    OCR1A = 3910; // (8000000 / (1024) * 500 *10^(-3)  
 
     TCNT1 = 0; // set timer to 0
     
@@ -63,44 +77,26 @@ static void initialize(void) {
     initialized = 1;
 }
 
-ISR(PCINT1_vect) {
-	if(PINB>>7 == 0){   
-		yield();
-	}	
+ISR(PCINT1_vect) { 
+	unlock(getButtonMutex());
     
 }
 
 
 ISR(TIMER1_COMPA_vect){
     blinkCounter++;
-    yield();
+    unlock(getBlinkMutex());
 }
 
-/*
-static void enqueue(thread p, thread *queue) {
-    p->next = NULL;
-    if (*queue == NULL) {
-        *queue = p;
-    } else {
-        thread q = *queue;
-        while (q->next)
-            q = q->next;
-        q->next = p;
-        
-    }
-}
-*/
+
+
 
 
 
 static void enqueue(thread p, thread *queue) {
-    if (*queue == NULL) {
-        *queue = p;
-    } else {
-        p->next = *queue;
-        *queue = p;
+    p->next = *queue;
+    *queue = p;
         
-    }
 }
 
 
@@ -123,6 +119,8 @@ static void dispatch(thread next) {
     }
 }
 
+
+
 void spawn(void (* function)(int), int arg) {
     thread newp;
 
@@ -142,7 +140,12 @@ void spawn(void (* function)(int), int arg) {
     }
     SETSTACK(&newp->context, &newp->stack);
 
-    enqueue(newp, &readyQ);
+    //enqueue(newp, &readyQ);
+    enqueue(current, &readyQ);
+    dispatch(newp);
+    
+
+    
     ENABLE();
 }
 

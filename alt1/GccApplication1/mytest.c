@@ -201,6 +201,7 @@ void button_1(int pos){
 int main() {
     LCD_Init();
 	blinkInit();
+	
 	spawn(button_1,4);
     spawn(computePrimes_1,0);
 	blink_1();

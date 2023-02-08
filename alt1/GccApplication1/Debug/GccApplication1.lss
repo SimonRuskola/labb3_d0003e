@@ -1065,6 +1065,7 @@ int main() {
  6b2:	0e 94 4d 00 	call	0x9a	; 0x9a <LCD_Init>
 	blinkInit();
  6b6:	0e 94 5f 00 	call	0xbe	; 0xbe <blinkInit>
+	
 	spawn(button_1,4);
  6ba:	64 e0       	ldi	r22, 0x04	; 4
  6bc:	70 e0       	ldi	r23, 0x00	; 0
@@ -1263,9 +1264,9 @@ static void initialize(void) {
  7d2:	30 e0       	ldi	r19, 0x00	; 0
  7d4:	30 93 1f 01 	sts	0x011F, r19	; 0x80011f <initialized+0x1>
  7d8:	20 93 1e 01 	sts	0x011E, r18	; 0x80011e <initialized>
-        
-    }
 }
+
+
 
 static thread dequeue(thread *queue) {
     thread p = *queue;
@@ -1326,9 +1327,9 @@ static thread dequeue(thread *queue) {
  838:	80 91 18 01 	lds	r24, 0x0118	; 0x800118 <current>
  83c:	90 91 19 01 	lds	r25, 0x0119	; 0x800119 <current+0x1>
  840:	0e 94 6b 03 	call	0x6d6	; 0x6d6 <enqueue>
-        
-    }
 }
+
+
 
 static thread dequeue(thread *queue) {
     thread p = *queue;
@@ -1392,9 +1393,9 @@ void yield(void) {
  89a:	80 91 18 01 	lds	r24, 0x0118	; 0x800118 <current>
  89e:	90 91 19 01 	lds	r25, 0x0119	; 0x800119 <current+0x1>
  8a2:	0e 94 6b 03 	call	0x6d6	; 0x6d6 <enqueue>
-        
-    }
 }
+
+
 
 static thread dequeue(thread *queue) {
     thread p = *queue;

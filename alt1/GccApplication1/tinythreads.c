@@ -90,6 +90,8 @@ static void enqueue(thread p, thread *queue) {
     }
 }
 
+
+
 static thread dequeue(thread *queue) {
     thread p = *queue;
     if (*queue) {

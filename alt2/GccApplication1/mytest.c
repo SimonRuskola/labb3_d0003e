@@ -29,7 +29,16 @@
 //#define ValueArray (int[]){ZeroValue,OneValue,TwoValue,ThreeValue,FourValue,FiveValue,SixValue,SevenValue,EightValue,NineValue,BlankValue}	
 int ValueArray[] = {ZeroValue,OneValue,TwoValue,ThreeValue,FourValue,FiveValue,SixValue,SevenValue,EightValue,NineValue,BlankValue};
 
-mutex m = MUTEX_INIT;
+
+#define cycleValue 15625
+int lastTime;
+volatile int deltaTime;
+
+extern mutex m_primes;
+extern mutex m_button;
+extern mutex m_blink;
+
+
 
 extern int blinkCounter;
 
@@ -138,32 +147,50 @@ void printAt(long num, int pos) {
 }
 
 void computePrimes(int pos) {
-    long n;
+    long n = 2;
 
-    for(n = 1; ; n++) {
-        if (is_prime(n)) {
+    
+	while (true)
+	{
+	    if (is_prime(n)) {
             printAt(n, pos);
         }
-    }
+	    n++;
+	}
+	
+   
+    
 }
 
 
 
 bool Cycle(void){
-	if(blinkCounter>=10){
+	if(blinkCounter>=1){
 		blinkCounter = 0;
 		return true;
 	}
 	return false;
+	
 }
 
 
 
 void blink(int n){
-	while(true){
-		while (Cycle())
-		{LCDDR3 = !LCDDR3;}	
+	
+
+	while (true)
+	{
+	    while (Cycle())
+	    {
+	    	
+	    	LCDDR3 = !LCDDR3;
+	    	
+	    }	
+		lock(&m_blink);
 	}
+	
+	
+	
 	
 	
 }
@@ -181,15 +208,19 @@ bool pressed(void){
 }
 
 void button(int pos){
-	
 	int n = 1;
+	
 	while (true)
 	{
-		if(pressed()){
-			n++;
-			printAt(n/2,pos);
-		}
+		lock(&m_button);
+	    if(pressed()){
+	    	n++;
+	    	printAt(n/2,pos);
+	    }
 	}
+	
+	
+	
 	
 
 }
@@ -199,8 +230,15 @@ int main() {
     LCD_Init();
 	blinkInit();
 
+
+	spawn(button,4);
+	spawn(blink,1);
+	computePrimes(0);
+
+	/*
 	spawn(button,4);
     spawn(computePrimes,0);
 	blink(1);
+	*/
 	
 }

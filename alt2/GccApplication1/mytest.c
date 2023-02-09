@@ -165,8 +165,8 @@ void computePrimes(int pos) {
 
 
 bool Cycle(void){
-	if(blinkCounter>=1){
-		blinkCounter = 0;
+	if(getBlinkCounter()>=1){
+		resetBlinkCounter();
 		return true;
 	}
 	return false;

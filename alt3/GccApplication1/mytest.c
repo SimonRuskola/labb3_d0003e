@@ -166,8 +166,8 @@ void computePrimes(int pos) {
 
 
 bool Cycle(void){
-	if(blinkCounter>=1){
-		blinkCounter = 0;
+	if(getBlinkCounter()>=1){
+		resetBlinkCounter();
 		return true;
 	}
 	return false;
@@ -227,6 +227,8 @@ int main() {
 	spawn(button,4);
 	spawn(blink,1);
 	computePrimes(0);
+	
+	
 
 	/*
 	spawn(button,4);

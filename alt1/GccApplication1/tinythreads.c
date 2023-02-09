@@ -76,6 +76,16 @@ ISR(TIMER1_COMPA_vect){
     yield();
 }
 
+int getBlinkCounter(void){
+    return blinkCounter;
+}
+
+void resetBlinkCounter(void){
+    blinkCounter = 0;
+}
+
+
+
 
 static void enqueue(thread p, thread *queue) {
     p->next = NULL;

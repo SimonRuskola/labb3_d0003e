@@ -88,6 +88,14 @@ ISR(TIMER1_COMPA_vect){
     unlock(getBlinkMutex());
 }
 
+int getBlinkCounter(void){
+    return blinkCounter;
+}
+
+void resetBlinkCounter(void){
+    blinkCounter = 0;
+}
+
 
 
 

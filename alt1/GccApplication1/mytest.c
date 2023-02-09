@@ -142,9 +142,9 @@ void computePrimes_1(int pos) {
 
     for(n = 1; ; n++) {
         if (is_prime(n)) {
-			//lock(&m);
+			lock(&m);
             printAt(n, pos);
-			//unlock(&m);
+			unlock(&m);
             //yield();	
         }
     }
@@ -153,12 +153,13 @@ void computePrimes_1(int pos) {
 
 
 bool Cycle(void){
-	if(blinkCounter>=10){
-		blinkCounter = 0;
+	if(getBlinkCounter()>=10){
+		resetBlinkCounter();
 		return true;
 	}
 	return false;
 }
+
 
 
 
